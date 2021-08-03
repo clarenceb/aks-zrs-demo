@@ -1,0 +1,61 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stateful-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: stateful-app  
+  template:
+    metadata:
+      labels:
+        name: stateful-app
+    spec:
+      containers:
+        - image: mcr.microsoft.com/oss/nginx/nginx:1.17.3-alpine
+          name: nginx-azuredisk
+          command:
+            - "/bin/sh"
+            - "-c"
+            - while true; do echo $(date) >> /mnt/azuredisk/outfile; sleep 1; done
+          volumeMounts:
+            - name: azuredisk01
+              mountPath: "/mnt/azuredisk"
+          livenessProbe:
+            exec:
+              command:
+              - /bin/ls
+              - /mnt/azuredisk/outfile
+            initialDelaySeconds: 3
+            periodSeconds: 5
+            timeoutSeconds: 1
+            failureThreshold: 3
+          readinessProbe:
+            exec:
+              command:
+              - /bin/ls
+              - /mnt/azuredisk/outfile
+            periodSeconds: 5
+            timeoutSeconds: 1
+            successThreshold: 2
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: topology.kubernetes.io/zone
+                operator: In
+                values:
+                - westus2-1
+                - westus2-2
+            - matchExpressions:
+              - key: agentpool
+                operator: In
+                values:
+                - npapps1
+      volumes:
+        - name: azuredisk01
+          persistentVolumeClaim:
+            claimName: pvc-zone-azuredisk
