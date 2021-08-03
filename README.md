@@ -122,6 +122,7 @@ wc -l < /mnt/azuredisk/outfile
 tail -f /mnt/azuredisk/outfile
 # CTRL+C
 exit
+```
 
 Reset Demo
 ----------
