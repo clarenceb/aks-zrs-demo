@@ -155,7 +155,7 @@ Events:
   Warning  FailedScheduling  23s   default-scheduler  0/3 nodes are available: 1 node(s) had volume node affinity conflict, 2 node(s) didn't match Pod's node affinity/selector.
 ```
 
-The "1 node(s) had volume node affinity conflict" error appears t be related to the PV having this automatically assigned nodeAffinity terms:
+The "1 node(s) had volume node affinity conflict" error appears to be related to the PV having these automatically assigned nodeAffinity nodeSelectorTerms:
 
 ```sh
 kubectl get pv pvc-5fcfecce-9793-4152-a73f-c0a146875f5c -o yaml
