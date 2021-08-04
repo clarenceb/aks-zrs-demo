@@ -45,16 +45,10 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
             - matchExpressions:
-              - key: topology.kubernetes.io/zone
-                operator: In
+              - key: kubernetes.azure.com/mode
+                operator: NotIn
                 values:
-                - westus2-1
-                - westus2-2
-            - matchExpressions:
-              - key: agentpool
-                operator: In
-                values:
-                - npapps1
+                - system
       volumes:
         - name: azuredisk01
           persistentVolumeClaim:
