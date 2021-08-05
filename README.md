@@ -5,7 +5,7 @@ Summary of demo:
 
 * This demo will create an AKS cluster in 2 zones with a node in each zone
 * A ZRS disk is created via a PVC and attached to a pod on a node in one zone.
-* When the node is deleted (similuating a node or zone failure), the pod will be rescheduled to a node in the 2nd zone.
+* When the node is deleted (simulating a node or zone failure), the pod will be rescheduled to a node in the 2nd zone.
 * The ZRS disk will be reattached correctly and the state is retained.
 
 Note: ZRS managed disks is currently in preview and supported only in the West US 2, West Europe, North Europe, and France Central regions.
