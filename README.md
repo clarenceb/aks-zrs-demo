@@ -58,7 +58,7 @@ Check nodes are spread across AZs:
 kubectl get node -o json | grep -e "hostname" -e "topology.kubernetes.io/zone"
 ```
 
-If you using AKS 1.20 or lower, you need to self-install the Azure Disk CSI driver: https://github.com/kubernetes-sigs/azuredisk-csi-driver/blob/master/docs/install-driver-on-aks.md
+If you using AKS 1.20 or lower, you need to self-install the [Azure Disk CSI driver](https://github.com/kubernetes-sigs/azuredisk-csi-driver/blob/master/docs/install-driver-on-aks.md) and follow the steps below:
 
 ```sh
 # Install by kubectl
