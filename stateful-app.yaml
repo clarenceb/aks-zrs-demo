@@ -14,8 +14,8 @@ spec:
         name: stateful-app
     spec:
       containers:
-        - image: mcr.microsoft.com/oss/nginx/nginx:1.17.3-alpine
-          name: nginx-azuredisk
+        - image: mcr.microsoft.com/cbl-mariner/base/core:2.0
+          name: mariner-azuredisk
           command:
             - "/bin/sh"
             - "-c"
@@ -40,16 +40,25 @@ spec:
             periodSeconds: 5
             timeoutSeconds: 1
             successThreshold: 2
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: kubernetes.azure.com/mode
-                operator: NotIn
-                values:
-                - system
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+            limits:
+              cpu: 200m
+              memory: 200Mi
+      # See: https://github.com/kubernetes-sigs/azuredisk-csi-driver/tree/master/docs/known-issues/node-shutdown-recovery
+      tolerations:
+      - key: "node.kubernetes.io/not-ready"
+        operator: "Exists"
+        effect: "NoExecute"
+        tolerationSeconds: 10
+      - key: "node.kubernetes.io/unreachable"
+        operator: "Exists"
+        effect: "NoExecute"
+        tolerationSeconds: 10
+      terminationGracePeriodSeconds: 10
       volumes:
         - name: azuredisk01
           persistentVolumeClaim:
-            claimName: pvc-zone-azuredisk
+            claimName: pvc-zrs-azuredisk
